@@ -1,10 +1,16 @@
 ﻿using ProjectHub.Api.Domain;
 using ProjectHub.Api.Repositories.Interfaces;
+using ProjectHub.Api.Storage;
 
 namespace ProjectHub.Api.Repositories;
 
 public class ProjectRepository : IProjectRepository
 {
+    public ProjectRepository(AppDbContext context)
+    {
+        
+    }
+    
     public Task<List<Project>> GetAllProjects()
     {
         throw new NotImplementedException();
@@ -25,12 +31,12 @@ public class ProjectRepository : IProjectRepository
         throw new NotImplementedException();
     }
 
-    public Task<Project> CreateProject(Project request)
+    public Task<Project> CreateProject(Project project)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Project> ChangeProject(Guid projectId, string title, string description)
+    public Task<Project> UpdateProject(Project project)
     {
         throw new NotImplementedException();
     }

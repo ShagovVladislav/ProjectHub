@@ -1,4 +1,5 @@
-﻿using ProjectHub.Api.DTOs.Requests;
+﻿using ProjectHub.Api.Domain;
+using ProjectHub.Api.DTOs.Requests;
 using ProjectHub.Api.DTOs.Responses;
 using ProjectHub.Api.Mappers.DtoEntityMappers;
 using ProjectHub.Api.Repositories.Interfaces;
@@ -15,9 +16,9 @@ public class ProjectService : IProjectService
         _projectRepository = projectRepository;
     }
     
-    public Task<List<ProjectResponse>> GetAllProjects()
+    public async Task<List<ProjectResponse>> GetAllProjects()
     {
-        throw new NotImplementedException();
+        return (await _projectRepository.GetAllProjects()).Select(x => x.ToDto()).ToList();
     }
 
     public async Task<ProjectResponse> GetProject(Guid projectId)
@@ -25,28 +26,39 @@ public class ProjectService : IProjectService
         return (await _projectRepository.GetProject(projectId)).ToDto();
     }
 
-    public Task<List<ProjectResponse>> GetAllProjectsByUser(Guid userId)
+    public async Task<List<ProjectResponse>> GetAllProjectsByUser(Guid userId)
     {
-        throw new NotImplementedException();
+        return (await _projectRepository.GetAllProjectsByUser(userId)).Select(x => x.ToDto()).ToList();
     }
 
-    public Task<ProjectResponse> GetAllProjectsByTitle(string title)
+    public async Task<ProjectResponse> CreateProject(ProjectCreateUpdateRequest createRequest)
     {
-        throw new NotImplementedException();
+        var project = new Project
+        {
+            Id = Guid.NewGuid(),
+            Title = createRequest.Title,
+            Description = createRequest.Description,
+            AuthorID = Guid.NewGuid(),//todo юзеры
+            CreatedAt =  DateTimeOffset.UtcNow,
+            UpdatedAt =  DateTimeOffset.UtcNow,
+            Collaborators = []
+        };
+        
+        return (await _projectRepository.CreateProject(project)).ToDto();
     }
 
-    public Task<ProjectResponse> CreateProject(ProjectCreateRequest request)
+    public async Task<ProjectResponse> UpdateProject(ProjectCreateUpdateRequest updateRequest)
     {
-        throw new NotImplementedException();
+        var project = await _projectRepository.GetProject(updateRequest.ProjectId);
+        project.Title = updateRequest.Title;
+        project.Description = updateRequest.Description;
+        project.UpdatedAt = DateTimeOffset.UtcNow;
+
+        return (await _projectRepository.UpdateProject(project)).ToDto();
     }
 
-    public Task<ProjectResponse> ChangeProject(Guid projectId, string title, string description)
+    public async Task DeleteProject(Guid projectId)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task DeleteProject(Guid projectId)
-    {
-        throw new NotImplementedException();
+        await _projectRepository.DeleteProject(projectId);    
     }
 }

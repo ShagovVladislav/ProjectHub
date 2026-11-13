@@ -8,7 +8,7 @@ public interface IProjectRepository
     Task<Project> GetProject(Guid projectId);
     Task<List<Project>> GetAllProjectsByUser(Guid userId);
     Task<Project> GetAllProjectsByTitle(string title);
-    Task <Project> CreateProject(Project request);
-    Task <Project> ChangeProject(Guid projectId, string title, string description);
+    Task <Project> CreateProject(Project project);
+    Task <Project> UpdateProject(Project project);
     Task DeleteProject(Guid projectId);
 }
