@@ -28,6 +28,8 @@ namespace ProjectHub.Migrations
                 {
                     table.PrimaryKey("PK_Projects", x => x.Id);
                 });
+            migrationBuilder.Sql("CREATE EXTENSION IF NOT EXISTS pg_trgm;");
+            migrationBuilder.Sql("CREATE INDEX ix_projects_titl_trgm ON projects USING gin (name gin_trgm_ops);");
         }
 
         /// <inheritdoc />

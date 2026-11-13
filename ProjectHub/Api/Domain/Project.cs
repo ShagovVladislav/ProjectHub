@@ -12,7 +12,7 @@ public class Project
         Id = projectId;
         Title = title;
         Description = description;
-        AuthorID = authorId;
+        AuthorId = authorId;
         Collaborators = collaborators;
         CreatedAt = createdAt;
         UpdatedAt = updatedAt;
@@ -21,8 +21,9 @@ public class Project
     public Guid Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public Guid AuthorID { get; set; }
+    public Guid AuthorId { get; set; }
     public List<Guid> Collaborators { get; set; } = [];
+    public bool IsPrivate { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset UpdatedAt { get; set; }
 }

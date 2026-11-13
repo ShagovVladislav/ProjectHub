@@ -13,7 +13,8 @@ public static class ProjectModelMapperExtension
             Title = project.Title,
             Description = project.Description,
             CreatedAt = project.CreatedAt,
-            AuthorID = project.AuthorID,
+            IsPrivate =  project.IsPrivate,
+            AuthorId = project.AuthorId,
             UpdatedAt = project.UpdatedAt
         };
     }
@@ -25,8 +26,10 @@ public static class ProjectModelMapperExtension
             Id = model.Id,
             Title = model.Title,
             Description = model.Description,
+            AuthorId = model.AuthorId,
+            Collaborators =  model.Collaborators,
+            IsPrivate = model.IsPrivate,
             CreatedAt = model.CreatedAt,
-            AuthorID = model.AuthorID,
             UpdatedAt = model.UpdatedAt
         };
     }

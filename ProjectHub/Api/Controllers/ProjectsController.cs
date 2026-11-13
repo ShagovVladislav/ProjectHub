@@ -7,49 +7,42 @@ namespace ProjectHub.Api.Controllers;
 
 [ApiController]
 [Route("projects/")]
-public class ProjectsController : ControllerBase
+public class ProjectsController(IProjectService projectService) : ControllerBase
 {
-    private readonly IProjectService _projectService;
-    
-    public ProjectsController(IProjectService projectService)
-    {
-        _projectService = projectService;
-    }
-    
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<ProjectResponse>> GetProject(Guid id)
+    public async Task<ActionResult<ProjectResponse?>> GetProject(Guid id, Guid userId)
     {
-        return await _projectService.GetProject(id);
+        return await projectService.GetProject(id, userId);
     }
     
     [HttpGet]
     public async Task<ActionResult<List<ProjectResponse>>> GetProjects()
     {
-        return await _projectService.GetAllProjects();
+        return await projectService.GetAllProjects();
     }
     
     [HttpGet("{userId:guid}/projects")]
     public async Task<ActionResult<List<ProjectResponse>>> GetProjectsByUser(Guid userId)
     {
-        return await _projectService.GetAllProjectsByUser(userId);
+        return await projectService.GetAllProjectsByUser(userId);
     }
     
     [HttpPost]
-    public async Task<ActionResult<ProjectResponse>> CreateProject(ProjectCreateUpdateRequest updateRequest)
+    public async Task<ActionResult<ProjectResponse?>> CreateProject(ProjectCreateUpdateRequest updateRequest)
     {
-        return await _projectService.CreateProject(updateRequest);
+        return await projectService.CreateProject(updateRequest);
     }
     
     [HttpPut]
-    public async Task<ActionResult<ProjectResponse>> UpdateProject(ProjectCreateUpdateRequest updateRequest)
+    public async Task<ActionResult<ProjectResponse?>> UpdateProject(ProjectCreateUpdateRequest updateRequest, Guid userId)
     {
-        return await _projectService.UpdateProject(updateRequest);
+        return await projectService.UpdateProject(updateRequest, userId);
     }
     
     [HttpDelete("{id:guid}")]
-    public async Task<ActionResult> DeleteProject(Guid id)
+    public async Task<ActionResult> DeleteProject(Guid id, Guid userId)
     {
-        await _projectService.DeleteProject(id);
+        await projectService.DeleteProject(id, userId);
         return Ok();
     }
 }

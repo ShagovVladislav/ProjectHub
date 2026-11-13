@@ -18,7 +18,14 @@ builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(connectionString));
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString(connectionString!),
+        npgsql =>
+        {
+            npgsql.EnableRetryOnFailure(3);
+            npgsql.CommandTimeout(30);
+            npgsql.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName);
+        }));
 
 var app = builder.Build();
 
