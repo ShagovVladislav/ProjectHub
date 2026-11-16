@@ -85,7 +85,7 @@ public class ProjectRepository(AppDbContext context) : IProjectRepository
 
     public async Task<Project?> UpdateProject(Project project, Guid userId)
     {
-        if (project.AuthorId != userId)
+        if (project.AuthorId != userId || project.Collaborators.Contains(userId))
             return null;
         
         var projectToUpdate = await context.Projects.FirstOrDefaultAsync(x => x.Id == project.Id)
@@ -99,12 +99,12 @@ public class ProjectRepository(AppDbContext context) : IProjectRepository
 
     public async Task DeleteProject(Guid projectId, Guid userId)
     {
-        if (projectId != userId)
+        var project = await context.Projects.FirstOrDefaultAsync(x => x.Id == projectId)
+                              ?? throw new NullReferenceException();
+        if (project.AuthorId != userId || project.Collaborators.Contains(userId))
             return;
         
-        var projectToDelete = await context.Projects.FirstOrDefaultAsync(x => x.Id == projectId)
-                              ?? throw new NullReferenceException();
-        context.Projects.Remove(projectToDelete);
+        context.Projects.Remove(project);
         await context.SaveChangesAsync();
     }
 }

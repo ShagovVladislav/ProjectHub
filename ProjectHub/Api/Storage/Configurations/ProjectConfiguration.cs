@@ -36,11 +36,11 @@ public class ProjectConfiguration : IEntityTypeConfiguration<ProjectModel>
         
         builder.Property(p => p.CreatedAt)
            .HasColumnName("created_at")
-           .HasColumnType("datetime")
+           .HasColumnType("timestamp with time zone")
            .IsRequired();
         
         builder.Property(p => p.UpdatedAt)
            .HasColumnName("updated_at")
-           .HasColumnType("datetime");
+           .HasColumnType("timestamp with time zone");
     }
 }
